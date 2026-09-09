@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Diabetic Retinopathy AI Screening</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Retina AI Screening</h1>
+
+        <form action="/predict" method="post" enctype="multipart/form-data">
+            <label class="upload-box">
+                <input type="file" name="image" accept="image/*" required>
+                <span>Upload Fundus Image</span>
+            </label>
+            <button type="submit">Analyze Retina</button>
+        </form>
+
+        {% if error %}
+            <div class="card error">{{ error }}</div>
+        {% endif %}
+
+        {% if quality_issue %}
+            <div class="card warning">
+                <h2>Image Quality: POOR</h2>
+                <ul>
+                    {% for issue in quality_issue.issues %}
+                        <li>{{ issue }}</li>
+                    {% endfor %}
+                </ul>
+                <p>Please upload a clearer fundus image.</p>
+                {% if uploaded_image %}
+                    <img src="{{ uploaded_image }}" class="preview" alt="uploaded image">
+                {% endif %}
+            </div>
+        {% endif %}
+
+        {% if result %}
+            <div class="card result">
+                <h2>Screening Result</h2>
+                <p><strong>Image Quality:</strong> {{ result.image_quality.quality }}</p>
+                <p><strong>Prediction:</strong> {{ result.prediction }}</p>
+                <p><strong>Confidence:</strong> {{ result.confidence }}%</p>
+
+                <div class="images">
+                    <div>
+                        <h3>Original</h3>
+                        <img src="{{ uploaded_image }}" alt="original fundus image">
+                    </div>
+                    <div>
+                        <h3>AI Attention (Grad-CAM)</h3>
+                        <img src="{{ gradcam_image }}" alt="grad-cam heatmap">
+                    </div>
+                </div>
+
+                <p class="disclaimer">
+                    ⚠ Not a medical diagnosis. Ophthalmic evaluation recommended.
+                </p>
+            </div>
+        {% endif %}
+    </div>
+</body>
+</html>

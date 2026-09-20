@@ -1,0 +1,27 @@
+# Python virtual environment
+.venv/
+
+# Python cache
+__pycache__/
+*.py[cod]
+
+# Dataset
+dataset/
+
+# Generated outputs
+outputs/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Environment/secrets
+.env
+.env.*
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Local-only trained models
+models/efficientnet_b0_balanced_best.pth
+models/efficientnet_b0_stage_b_sampler_best.pth
